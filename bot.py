@@ -30,26 +30,28 @@ viber = Api(BotConfiguration(
 @app.route('/', methods=['POST'])
 def incoming():
     logger.debug("received request. post data: {0}".format(request.get_data()))
-# every viber message is signed, you can verify the signature using this method
+    # every viber message is signed, you can verify the signature using this method
     if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
         return Response(status=403)
+
+    # this library supplies a simple way to receive a request object
     viber_request = viber.parse_request(request.get_data())
 
     if isinstance(viber_request, ViberMessageRequest):
-		message = viber_request.get_message()
-		viber.send_messages(viber_request.get_sender().get_id(), [
-			message
-		])
-    elif isinstance(viber_request, ViberConversationStartedRequest) \
-			or isinstance(viber_request, ViberSubscribedRequest) \
-			or isinstance(viber_request, ViberUnsubscribedRequest):
-		viber.send_messages(viber_request.get_user().get_id(), [
-			TextMessage(None, None, viber_request.get_event_type())
-		])
+        message = viber_request.message
+        # lets echo back
+        viber.send_messages(viber_request.sender.id, [
+            message
+        ])
+    elif isinstance(viber_request, ViberSubscribedRequest):
+        viber.send_messages(viber_request.get_user.id, [
+            TextMessage(text="thanks for subscribing!")
+        ])
     elif isinstance(viber_request, ViberFailedRequest):
-		logger.warn("client failed receiving message. failure: {0}".format(viber_request))
+        logger.warn("client failed receiving message. failure: {0}".format(viber_request))
 
     return Response(status=200)
+
 
 def set_webhook(viber):
 	viber.set_webhook('https://viber-bot-meteokav.herokuapp.com/')
