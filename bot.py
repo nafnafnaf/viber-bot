@@ -19,7 +19,7 @@ def incoming():
 	return Response(status=200)
 
 context = ('server.crt', 'server.key')
-app.run(host='0.0.0.0', port=443, debug=True)#, ssl_context=context)
+app.run(host='https://viber-bot-meteokav.herokuapp.com', port=443, debug=True, ssl_context=context)
 
 viber.set_webhook('https://viber-bot-meteokav.herokuapp.com:443/')
 
