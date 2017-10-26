@@ -9,3 +9,4 @@ requests
 beautifulsoup4
 unicodedata2
 tabulate
+viberbot
