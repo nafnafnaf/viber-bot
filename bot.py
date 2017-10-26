@@ -17,9 +17,9 @@ def incoming():
 	logger.debug("received request. post data: {0}".format(request.get_data()))
 	# handle the request here
 	return Response(status=200)
-
+#XREIAZETAI DHMIOYRGEIA SSL CERT APO TA APP TOY HEROKU - DHMIOYRGEIA APO TOPIKO openssl KAI APOSTOLH STO APP TOY HEROKU 20USD/MONTH
 context = ('server.crt', 'server.key')
-app.run(host='https://viber-bot-meteokav.herokuapp.com', port=443, debug=True, ssl_context=context)
+app.run(host='0.0.0.0', port=443, debug=True, ssl_context=context)
 
 viber.set_webhook('https://viber-bot-meteokav.herokuapp.com:443/')
 
