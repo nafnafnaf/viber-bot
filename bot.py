@@ -25,7 +25,7 @@ app = Flask(__name__)
 viber = Api(BotConfiguration(
     name='kavala weather',
     avatar='http://site.com/avatar.jpg',
-    auth_token = os.environ['VIBER_TOKEN']
+    auth_token = '46d572af7de7d364-14a48b4ad46ef327-d3b88ee49db77f82'
 ))
 
 
