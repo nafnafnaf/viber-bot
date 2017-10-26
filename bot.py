@@ -1,17 +1,27 @@
-from flask import Flask, request, Response
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
-from viberbot.api.messages.text_message import TextMessage
-from viberbot.api.viber_requests import ViberConversationStartedRequest
-from viberbot.api.viber_requests import ViberFailedRequest
-from viberbot.api.viber_requests import ViberMessageRequest
-from viberbot.api.viber_requests import ViberSubscribedRequest
-from viberbot.api.viber_requests import ViberUnsubscribedRequest
 
-import time
-import logging
-import sched
-import threading
+bot_configuration = BotConfiguration(
+	name='weather data',
+	avatar='http://viber.com/avatar.jpg',
+	auth_token='46d62887e527d0c3-1bfc4106b385f2a3-4168ccefcfd50c4b'
+)
+viber = Api(bot_configuration)
+
+from flask import Flask, request, Response
+
+app = Flask(__name__)
+
+@app.route('/incoming', methods=['POST'])
+def incoming():
+	logger.debug("received request. post data: {0}".format(request.get_data()))
+	# handle the request here
+	return Response(status=200)
+
+context = ('server.crt', 'server.key')
+app.run(host='0.0.0.0', port=443, debug=True, ssl_context=context)
+
+viber.set_webhook('https://viber-bot-meteokav.herokuapp.com/:443/')
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -20,12 +30,47 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+from viberbot.api.messages import (
+    TextMessage,
+    ContactMessage,
+    PictureMessage,
+    VideoMessage
+)
+from viberbot.api.messages.data_types.contact import Contact
+
+# creation of text message
+text_message = TextMessage(text="sample text message!")
+
+# creation of contact message
+contact = Contact(name="Viber user", phone_number="0123456789")
+contact_message = ContactMessage(contact=contact)
+
+# creation of picture message
+picture_message = PictureMessage(text="Check this", media="http://site.com/img.jpg")
+
+# creation of video message
+video_message = VideoMessage(media="http://mediaserver.com/video.mp4", size=4324)
+
+from flask import Flask, request, Response
+from viberbot import Api
+from viberbot.api.bot_configuration import BotConfiguration
+from viberbot.api.messages import VideoMessage
+from viberbot.api.messages.text_message import TextMessage
+import logging
+
+from viberbot.api.viber_requests import ViberConversationStartedRequest
+from viberbot.api.viber_requests import ViberFailedRequest
+from viberbot.api.viber_requests import ViberMessageRequest
+from viberbot.api.viber_requests import ViberSubscribedRequest
+from viberbot.api.viber_requests import ViberUnsubscribedRequest
+
 app = Flask(__name__)
 viber = Api(BotConfiguration(
-  name='kavala weather',
-  avatar='http://viber.com/avatar.jpg',
-  auth_token='46d572af7de7d364-14a48b4ad46ef327-d3b88ee49db77f82'
+    name='PythonSampleBot',
+    avatar='http://site.com/avatar.jpg',
+    auth_token='445da6az1s345z78-dazcczb2542zv51a-e0vc5fva17480im9'
 ))
+
 
 @app.route('/', methods=['POST'])
 def incoming():
@@ -53,16 +98,5 @@ def incoming():
     return Response(status=200)
 
 if __name__ == "__main__":
-   # context = ('server.crt', 'server.key')
-    app.run(host='0.0.0.0', port=443, debug=True)#, ssl_context=context)
-#def set_webhook(viber):
-#	viber.set_webhook('https://viber-bot-meteokav.herokuapp.com/')
-
-#if __name__ == "__main__":
-#	scheduler = sched.scheduler(time.time, time.sleep)
-#	scheduler.enter(5, 1, set_webhook, (viber,))
-#	t = threading.Thread(target=scheduler.run)
-#	t.start()
-
-#	context = ('server.crt', 'server.key')
-#	app.run(host='0.0.0.0', port=8443, debug=True, ssl_context=context)
+    context = ('server.crt', 'server.key')
+    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=context)
