@@ -30,7 +30,9 @@ viber = Api(BotConfiguration(
 @app.route('/', methods=['POST'])
 def incoming():
 	logger.debug("received request. post data: {0}".format(request.get_data()))
-
+# every viber message is signed, you can verify the signature using this method
+    if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
+        return Response(status=403)
 	viber_request = viber.parse_request(request.get_data())
 
 	if isinstance(viber_request, ViberMessageRequest):
