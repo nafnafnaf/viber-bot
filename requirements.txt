@@ -6,7 +6,6 @@ click
 gunicorn
 itsdangerous
 requests
-wsgiref
 beautifulsoup4
 unicodedata2
 tabulate
