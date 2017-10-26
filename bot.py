@@ -53,8 +53,8 @@ def incoming():
     return Response(status=200)
 
 if __name__ == "__main__":
-    context = ('server.crt', 'server.key')
-    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=context)
+   # context = ('server.crt', 'server.key')
+    app.run(host='0.0.0.0', port=443, debug=True)#, ssl_context=context)
 #def set_webhook(viber):
 #	viber.set_webhook('https://viber-bot-meteokav.herokuapp.com/')
 
