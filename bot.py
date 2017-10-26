@@ -56,7 +56,6 @@ def incoming():
 def set_webhook(viber):
 	viber.set_webhook('https://viber-bot-meteokav.herokuapp.com/')
 
-	viber.set_webhook('https://mybotwebserver.com:8443/')
 
 if __name__ == "__main__":
     context = ('server.crt', 'server.key')
